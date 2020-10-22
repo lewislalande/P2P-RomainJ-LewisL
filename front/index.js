@@ -102,9 +102,17 @@ function handleGameOver(data) {
     gameActive = false;
 
     if (data.winner === playerNumber) {
-        alert('You Win!');
+        if (confirm('You Win!, You wanna play again ?')) {
+            reset();
+        } else {
+            alert('You can close the app then !!!')
+        }
     } else {
-        alert('You Lose :(');
+        if (confirm('You lose!, You wanna play again ?')) {
+            reset();
+        } else {
+            alert('You can close the app then !!!')
+        }
     }
 }
 
