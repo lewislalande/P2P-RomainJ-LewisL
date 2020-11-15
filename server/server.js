@@ -6,12 +6,14 @@ const { makeid } = require('./utils');
 const state = {};
 const clientRooms = {};
 
+//Une fois le client connecté, selon les evenements des fonctions adéquates :
 io.on('connection', client => {
 
     client.on('keydown', handleKeydown);
     client.on('newGame', handleNewGame);
     client.on('joinGame', handleJoinGame);
 
+    //Lorsqu'il rejoins une partie
     function handleJoinGame(roomName) {
         const room = io.sockets.adapter.rooms[roomName];
 
@@ -42,6 +44,7 @@ io.on('connection', client => {
         startGameInterval(roomName);
     }
 
+    //Lorsqu'il créer une nouvelle partie
     function handleNewGame() {
         let roomName = makeid(5);
         clientRooms[client.id] = roomName;
@@ -54,6 +57,7 @@ io.on('connection', client => {
         client.emit('init', 1);
     }
 
+    //Lorsqu'il utilise son clavier
     function handleKeydown(keyCode) {
         const roomName = clientRooms[client.id];
         if (!roomName) {
@@ -87,13 +91,13 @@ function startGameInterval(roomName) {
         }
     }, 1000 / FRAME_RATE);
 }
-
+//Envoi des informations au client de la partie
 function emitGameState(room, gameState) {
-    // Send this event to everyone in the room.
     io.sockets.in(room)
         .emit('gameState', JSON.stringify(gameState));
 }
 
+//Envoi des résultat finaux au client de la partie
 function emitGameOver(room, winner) {
     io.sockets.in(room)
         .emit('gameOver', JSON.stringify({ winner }));

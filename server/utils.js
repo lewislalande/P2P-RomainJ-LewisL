@@ -2,6 +2,7 @@ module.exports = {
     makeid,
 }
 
+//Fonction pour creer un Identifiant aléatoire pour la partie
 function makeid(length) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

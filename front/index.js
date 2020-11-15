@@ -2,8 +2,10 @@ const BG_COLOUR = '#231f20';
 const SNAKE_COLOUR = '#c2c2c2';
 const FOOD_COLOUR = '#e66916';
 
+//Connection à la socket
 const socket = io('https://sleepy-island-33889.herokuapp.com/');
 
+//Recupération des données envoyé par le socket
 socket.on('init', handleInit);
 socket.on('gameState', handleGameState);
 socket.on('gameOver', handleGameOver);
@@ -11,6 +13,7 @@ socket.on('gameCode', handleGameCode);
 socket.on('unknownCode', handleUnknownCode);
 socket.on('tooManyPlayers', handleTooManyPlayers);
 
+//Recupération des données lié au element du code HTML
 const gameScreen = document.getElementById('gameScreen');
 const initialScreen = document.getElementById('initialScreen');
 const newGameBtn = document.getElementById('newGameButton');
@@ -18,6 +21,7 @@ const joinGameBtn = document.getElementById('joinGameButton');
 const gameCodeInput = document.getElementById('gameCodeInput');
 const gameCodeDisplay = document.getElementById('gameCodeDisplay');
 
+//Recupération des données des bouton de partie
 newGameBtn.addEventListener('click', newGame);
 joinGameBtn.addEventListener('click', joinGame);
 
@@ -36,7 +40,7 @@ function joinGame() {
 let canvas, ctx;
 let playerNumber;
 let gameActive = false;
-
+// Initialisation de l'écran de partie
 function init() {
     initialScreen.style.display = "none";
     gameScreen.style.display = "block";
@@ -53,10 +57,12 @@ function init() {
     gameActive = true;
 }
 
+//Récupération des données emise par les touches du clavier
 function keydown(e) {
     socket.emit('keydown', e.keyCode);
 }
 
+//Coloration de la grille de la partie
 function paintGame(state) {
     ctx.fillStyle = BG_COLOUR;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -72,6 +78,7 @@ function paintGame(state) {
     paintPlayer(state.players[1], size, 'red');
 }
 
+//Coloration des serpents
 function paintPlayer(playerState, size, colour) {
     const snake = playerState.snake;
 
@@ -81,6 +88,7 @@ function paintPlayer(playerState, size, colour) {
     }
 }
 
+//Les fonctions suivantes s'occupent des gérer les données emise par le socket
 function handleInit(number) {
     playerNumber = number;
 }
@@ -102,17 +110,11 @@ function handleGameOver(data) {
     gameActive = false;
 
     if (data.winner === playerNumber) {
-        if (confirm('You Win!, You wanna play again ?')) {
-            reset();
-        } else {
-            alert('You can close the app then !!!')
-        }
+        alert('You Win!, Press OK to return in the lobby');
+        reset();
     } else {
-        if (confirm('You lose!, You wanna play again ?')) {
-            reset();
-        } else {
-            alert('You can close the app then !!!')
-        }
+        alert('You lose!, Press OK to return in the lobby')
+        reset();
     }
 }
 
@@ -130,6 +132,8 @@ function handleTooManyPlayers() {
     alert('This game is already in progress');
 }
 
+
+//Fonction pour revenir a une configuration vierge
 function reset() {
     playerNumber = null;
     gameCodeInput.value = '';

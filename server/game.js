@@ -6,12 +6,14 @@ module.exports = {
     getUpdatedVelocity,
 }
 
+//Lancement de la game
 function initGame() {
     const state = createGameState()
     randomFood(state);
-    return state;
+    setTimeout(() => {return state;},2000)
 }
 
+//Initialisation de la position des serpents
 function createGameState() {
     return {
         players: [{
@@ -30,17 +32,17 @@ function createGameState() {
             ],
         }, {
             pos: {
-                x: 18,
-                y: 10,
+                x: 9,
+                y: 5,
             },
             vel: {
                 x: 0,
                 y: 0,
             },
             snake: [
-                {x: 20, y: 10},
-                {x: 19, y: 10},
-                {x: 18, y: 10},
+                {x: 7, y: 5},
+                {x: 8, y: 5},
+                {x: 9, y: 5},
             ],
         }],
         food: {},
@@ -48,6 +50,7 @@ function createGameState() {
     };
 }
 
+//Fonction pour la gestion des deplacement des serpents et de leurs corps
 function gameLoop(state) {
     if (!state) {
         return;
@@ -109,6 +112,7 @@ function gameLoop(state) {
     return false;
 }
 
+//Fonction qui s'occupe de l'apparition des fruits aléatoirement sur la grille
 function randomFood(state) {
     food = {
         x: Math.floor(Math.random() * GRID_SIZE),
@@ -130,6 +134,7 @@ function randomFood(state) {
     state.food = food;
 }
 
+//Gestion des touches clavier pour la direction du serpent
 function getUpdatedVelocity(keyCode) {
     switch (keyCode) {
         case 37: { // left
