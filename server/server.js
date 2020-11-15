@@ -9,10 +9,10 @@ const clientRooms = {};
 io.on('connection', client => {
 
     client.on('keydown', handleKeydown);
-    client.on('newGame', handleNewGame);
-    client.on('joinGame', handleJoinGame);
+    client.on('startGame', handleStartGame);
+    client.on('enterGame', handleEnterGame);
 
-    function handleJoinGame(roomName) {
+    function handleEnterGame(roomName) {
         const room = io.sockets.adapter.rooms[roomName];
 
         let allUsers;
@@ -42,7 +42,7 @@ io.on('connection', client => {
         startGameInterval(roomName);
     }
 
-    function handleNewGame() {
+    function handleStartGame() {
         let roomName = makeid(5);
         clientRooms[client.id] = roomName;
         client.emit('gameCode', roomName);

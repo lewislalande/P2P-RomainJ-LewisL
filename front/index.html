@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
 <style>
- #gameScreen {
+ #screen {
   display: none;
 }
 </style>
@@ -21,7 +21,7 @@
             <button
               type="submit"
               class="btn btn-success"
-              id="newGameButton"
+              id="startGameButton"
             >
               Creer une partie
             </button>
@@ -32,14 +32,14 @@
             <button
               type="submit"
               class="btn btn-success"
-              id="joinGameButton"
+              id="enterGameButton"
             >
               Rejoindre une partie
             </button>
         </div>
       </div>
 
-      <div id="gameScreen" class="h-100">
+      <div id="screen" class="h-100">
         <div class="d-flex flex-column align-items-center justify-content-center h-100">
 
           <h1>Code de la partie : <span id="gameCodeDisplay"></span></h1>

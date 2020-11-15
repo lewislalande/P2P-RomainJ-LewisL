@@ -1,7 +1,8 @@
-const BG_COLOUR = '#231f20';
-const SNAKE_COLOUR = '#c2c2c2';
-const FOOD_COLOUR = '#e66916';
+const BACKGROUND_COLOR = '#231f20';
+const SNAKE_COLOR = '#c2c2c2';
+const FOOD_COLOR = '#e66916';
 
+// const socket = io('https://localhost:3000');
 const socket = io('https://sleepy-island-33889.herokuapp.com/');
 
 socket.on('init', handleInit);
@@ -11,25 +12,25 @@ socket.on('gameCode', handleGameCode);
 socket.on('unknownCode', handleUnknownCode);
 socket.on('tooManyPlayers', handleTooManyPlayers);
 
-const gameScreen = document.getElementById('gameScreen');
+const screen = document.getElementById('screen');
 const initialScreen = document.getElementById('initialScreen');
-const newGameBtn = document.getElementById('newGameButton');
-const joinGameBtn = document.getElementById('joinGameButton');
+const startGameBtn = document.getElementById('startGameButton');
+const enterGameBtn = document.getElementById('enterGameButton');
 const gameCodeInput = document.getElementById('gameCodeInput');
 const gameCodeDisplay = document.getElementById('gameCodeDisplay');
 
-newGameBtn.addEventListener('click', newGame);
-joinGameBtn.addEventListener('click', joinGame);
+startGameBtn.addEventListener('click', startGame);
+enterGameBtn.addEventListener('click', enterGame);
 
 
-function newGame() {
-    socket.emit('newGame');
+function startGame() {
+    socket.emit('startGame');
     init();
 }
 
-function joinGame() {
+function enterGame() {
     const code = gameCodeInput.value;
-    socket.emit('joinGame', code);
+    socket.emit('enterGame', code);
     init();
 }
 
@@ -39,14 +40,14 @@ let gameActive = false;
 
 function init() {
     initialScreen.style.display = "none";
-    gameScreen.style.display = "block";
+    screen.style.display = "block";
 
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
 
     canvas.width = canvas.height = 600;
 
-    ctx.fillStyle = BG_COLOUR;
+    ctx.fillStyle = BACKGROUND_COLOR;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     document.addEventListener('keydown', keydown);
@@ -58,24 +59,24 @@ function keydown(e) {
 }
 
 function paintGame(state) {
-    ctx.fillStyle = BG_COLOUR;
+    ctx.fillStyle = BACKGROUND_COLOR;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     const food = state.food;
     const gridsize = state.gridsize;
     const size = canvas.width / gridsize;
 
-    ctx.fillStyle = FOOD_COLOUR;
+    ctx.fillStyle = FOOD_COLOR;
     ctx.fillRect(food.x * size, food.y * size, size, size);
 
-    paintPlayer(state.players[0], size, SNAKE_COLOUR);
+    paintPlayer(state.players[0], size, SNAKE_COLOR);
     paintPlayer(state.players[1], size, 'red');
 }
 
-function paintPlayer(playerState, size, colour) {
+function paintPlayer(playerState, size, COLOR) {
     const snake = playerState.snake;
 
-    ctx.fillStyle = colour;
+    ctx.fillStyle = COLOR;
     for (let cell of snake) {
         ctx.fillRect(cell.x * size, cell.y * size, size, size);
     }
@@ -102,17 +103,11 @@ function handleGameOver(data) {
     gameActive = false;
 
     if (data.winner === playerNumber) {
-        if (confirm('You Win!, You wanna play again ?')) {
-            reset();
-        } else {
-            alert('You can close the app then !!!')
-        }
+        alert("Vous avez gagné. Appuyez sur OK pour revenir à l'accueil");
+        reset();
     } else {
-        if (confirm('You lose!, You wanna play again ?')) {
-            reset();
-        } else {
-            alert('You can close the app then !!!')
-        }
+        alert("Vous avez perdu. Appuyez sur OK pour revenir à l'accueil")
+        reset();
     }
 }
 
@@ -122,17 +117,17 @@ function handleGameCode(gameCode) {
 
 function handleUnknownCode() {
     reset();
-    alert('Unknown Game Code')
+    alert('Code inconnue')
 }
 
 function handleTooManyPlayers() {
     reset();
-    alert('This game is already in progress');
+    alert('Cette partie est déjà commencée');
 }
 
 function reset() {
     playerNumber = null;
     gameCodeInput.value = '';
     initialScreen.style.display = "block";
-    gameScreen.style.display = "none";
+    screen.style.display = "none";
 }

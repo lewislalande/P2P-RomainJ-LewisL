@@ -10,6 +10,7 @@ function initGame() {
     const state = createGameState()
     randomFood(state);
     return state;
+    
 }
 
 function createGameState() {
@@ -30,17 +31,17 @@ function createGameState() {
             ],
         }, {
             pos: {
-                x: 18,
-                y: 10,
+                x: 9,
+                y: 5,
             },
             vel: {
                 x: 0,
                 y: 0,
             },
             snake: [
-                {x: 20, y: 10},
-                {x: 19, y: 10},
-                {x: 18, y: 10},
+                {x: 7, y: 5},
+                {x: 8, y: 5},
+                {x: 9, y: 5},
             ],
         }],
         food: {},
