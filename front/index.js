@@ -110,10 +110,10 @@ function handleGameOver(data) {
     gameActive = false;
 
     if (data.winner === playerNumber) {
-        alert('You Win!, Press OK to return in the lobby');
+        alert("Vous avez gagné. Appuyez sur OK pour revenir à l'accueil");
         reset();
     } else {
-        alert('You lose!, Press OK to return in the lobby')
+        alert("Vous avez perdu. Appuyez sur OK pour revenir à l'accueil")
         reset();
     }
 }
@@ -124,12 +124,12 @@ function handleGameCode(gameCode) {
 
 function handleUnknownCode() {
     reset();
-    alert('Unknown Game Code')
+    alert('Code inconnue')
 }
 
 function handleTooManyPlayers() {
     reset();
-    alert('This game is already in progress');
+    alert('Cette partie est déjà commencée');
 }
 
 

@@ -10,11 +10,10 @@ const clientRooms = {};
 io.on('connection', client => {
 
     client.on('keydown', handleKeydown);
-    client.on('newGame', handleNewGame);
-    client.on('joinGame', handleJoinGame);
+    client.on('startGame', handleStartGame);
+    client.on('enterGame', handleEnterGame);
 
-    //Lorsqu'il rejoins une partie
-    function handleJoinGame(roomName) {
+    function handleEnterGame(roomName) {
         const room = io.sockets.adapter.rooms[roomName];
 
         let allUsers;
@@ -44,8 +43,7 @@ io.on('connection', client => {
         startGameInterval(roomName);
     }
 
-    //Lorsqu'il créer une nouvelle partie
-    function handleNewGame() {
+    function handleStartGame() {
         let roomName = makeid(5);
         clientRooms[client.id] = roomName;
         client.emit('gameCode', roomName);
@@ -57,7 +55,6 @@ io.on('connection', client => {
         client.emit('init', 1);
     }
 
-    //Lorsqu'il utilise son clavier
     function handleKeydown(keyCode) {
         const roomName = clientRooms[client.id];
         if (!roomName) {
